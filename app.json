@@ -3,11 +3,19 @@
     "name": "mobile-to-do-list",
     "slug": "mobile-to-do-list",
     "version": "1.0.0",
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "android": {
       "googleServicesFile": "./android/app/google-services.json",
       "package": "com.astroonauta.mobiletodolist"
     },
-    "plugins": ["@react-native-firebase/app"]
+    "ios": {
+      "googleServicesFile": "./ios/GoogleService-Info.plist",
+      "bundleIdentifier": "org.name.mobiletodolist"
+    },
+    "plugins": [
+      "@react-native-firebase/app"
+    ]
   }
 }
