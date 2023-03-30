@@ -1,4 +1,4 @@
-package com.mobiletodolist;
+package com.astroonauta.mobiletodolist;
 
 import android.os.Build;
 import android.os.Bundle;

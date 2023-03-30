@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "53838976108",
+    "project_id": "app-meteor-to-do-list",
+    "storage_bucket": "app-meteor-to-do-list.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:53838976108:android:e047c89d2c41a8b1b47449",
+        "android_client_info": {
+          "package_name": "com.mobiletodolist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "53838976108-djs7725o08kdh327ge4cebpcp3jm0m8t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYT5acw6InJ5Wt2wxKM0F-y7YbZuPcZiw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "53838976108-djs7725o08kdh327ge4cebpcp3jm0m8t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,4 @@
-package com.mobiletodolist;
+package com.astroonauta.mobiletodolist;
 
 import android.app.Application;
 import android.content.res.Configuration;
