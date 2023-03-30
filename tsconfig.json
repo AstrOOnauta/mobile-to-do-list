@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "moduleResolution": "node",
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "noEmit": true,
+    "useUnknownInCatchVariables": false,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "incremental": true
+  },
+  "extends": "expo/tsconfig.base",
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js"]
+}
