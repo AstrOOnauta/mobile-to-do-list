@@ -1,12 +1,17 @@
 import React from 'react';
 import {NativeBaseProvider} from 'native-base';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
-import Home from 'src/pages/Home';
+import {Routes} from 'src/routes';
+
+import 'react-native-gesture-handler';
 
 export default function App() {
   return (
-    <NativeBaseProvider>
-      <Home />
-    </NativeBaseProvider>
+    <SafeAreaProvider>
+      <NativeBaseProvider>
+        <Routes />
+      </NativeBaseProvider>
+    </SafeAreaProvider>
   );
 }

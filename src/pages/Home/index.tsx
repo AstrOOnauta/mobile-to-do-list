@@ -1,15 +1,20 @@
 import React from 'react';
+import {Box, Text, VStack} from 'native-base';
+import {StackScreenProps} from '@react-navigation/stack';
 
-import {Box, Text} from 'native-base';
+import HomeRoutes from 'src/routes/home.routes';
+import {AppRoutesParamsList} from 'src/shared/interfaces/routes';
 
-export default function Home() {
+export default function Home({
+  route,
+  navigation,
+}: StackScreenProps<AppRoutesParamsList, 'home'>) {
   return (
-    <Box
-      flex={1}
-      backgroundColor="gray.50"
-      alignItems="center"
-      justifyContent="center">
-      <Text>Hello World!</Text>
-    </Box>
+    <VStack flex={1}>
+      <Box backgroundColor="white" alignItems="center" justifyContent="center">
+        <Text>Home</Text>
+      </Box>
+      <HomeRoutes />
+    </VStack>
   );
 }
