@@ -42,7 +42,6 @@ export default function Login({
           showsVerticalScrollIndicator={false}>
           <VStack mt={12} mb={6} p={4}>
             <Image
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               source={require('../../assets/images/logo.png')}
               alt="logo"
               alignSelf="center"
