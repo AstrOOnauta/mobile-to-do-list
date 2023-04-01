@@ -1,12 +1,11 @@
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {Box, Icon, Image, Pressable, Text} from 'native-base';
+import {Box, Icon, Image, Text} from 'native-base';
 import {StackScreenProps} from '@react-navigation/stack';
-import {Ionicons} from '@expo/vector-icons';
 
 import {AuthRoutesParamsList} from 'src/shared/interfaces/routes';
 import Input from 'src/components/Form/Input';
 import Button from 'src/components/Form/Button';
+import BackButton from 'src/components/BackButton';
 
 export default function RecoveryPassword({
   route,
@@ -14,17 +13,7 @@ export default function RecoveryPassword({
 }: StackScreenProps<AuthRoutesParamsList, 'recovery-password'>) {
   return (
     <Box flex={1} p={6} backgroundColor="gray.50">
-      <Pressable
-        position="absolute"
-        top={5}
-        left={5}
-        backgroundColor="amber.300"
-        p={2}
-        borderRadius={20}
-        _pressed={{opacity: 0.6}}
-        onPress={navigation.goBack}>
-        <Icon as={<Ionicons name="arrow-back" />} color="violet.600" size={6} />
-      </Pressable>
+      <BackButton goBack={navigation.goBack} />
       <Image
         alignSelf="center"
         source={require('../../assets/images/lock-illustration.png')}
