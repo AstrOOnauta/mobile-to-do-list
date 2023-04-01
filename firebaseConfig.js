@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import {initializeApp} from 'firebase/app';
 
 const firebaseConfig = {
