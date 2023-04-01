@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React from 'react';
 import {
   TouchableOpacity,
@@ -5,6 +8,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
 import {
   Box,
@@ -17,16 +21,72 @@ import {
 } from 'native-base';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {StackScreenProps} from '@react-navigation/stack';
+import {Controller, FieldValues, useForm} from 'react-hook-form';
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+
+import {app} from '../../../firebaseConfig';
 
 import {AuthRoutesParamsList} from 'src/shared/interfaces/routes';
 import {routes} from 'src/shared/constants/routes';
 import Input from 'src/components/Form/Input';
 import Button from 'src/components/Form/Button';
+import {checkEmail} from 'src/shared/utils/checkEmail';
+
+interface FormProps extends FieldValues {
+  email: string;
+  password: string;
+}
 
 export default function Login({
   route,
   navigation,
 }: StackScreenProps<AuthRoutesParamsList, 'login'>) {
+  const {control, handleSubmit} = useForm<FormProps>();
+
+  const auth = getAuth(app);
+
+  async function onSubmit(form: FormProps) {
+    if (!form.email || !form.password) {
+      Alert.alert(
+        'Meteor To Do',
+        'Por favor preencha os campos necessários para realizar o login!',
+      );
+    }
+
+    const isValid = checkEmail(form.email);
+    if (!isValid) {
+      Alert.alert('Meteor To Do', 'Digite um e-mail válido!');
+    }
+
+    if (form.password.length < 6) {
+      Alert.alert('Meteor To Do', 'Sua senha deve ter no mínimo 6 caracteres!');
+    }
+
+    await signInWithEmailAndPassword(auth, form.email, form.password)
+      .then(res => {
+        Alert.alert('Meteor To Do', 'Login realizado com sucesso!');
+      })
+      .catch(error => {
+        console.log(error.code);
+        if (error.code === 'auth/user-not-found') {
+          return Alert.alert('Meteor To Do', 'E-mail e/ou senha incorreto!');
+        }
+
+        if (error.code === 'auth/email-already-in-use') {
+          return Alert.alert(
+            'Meteor To Do',
+            'Este usuário já está logado em outro dispositivo!',
+          );
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          return Alert.alert('Meteor To Do', 'E-mail inválido!');
+        }
+
+        Alert.alert('Meteor To Do', error.code);
+      });
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
@@ -64,35 +124,51 @@ export default function Login({
             </Text>
             <Box mt={6}>
               <Text color="gray.700">E-mail</Text>
-              <Input
-                placeholder="Digite o seu e-mail"
-                autoCapitalize="none"
-                leftElement={
-                  <Box ml={2}>
-                    <MaterialCommunityIcons
-                      name="email-outline"
-                      size={24}
-                      color={theme.colors.gray[700]}
-                    />
-                  </Box>
-                }
+              <Controller
+                name="email"
+                control={control}
+                render={({field: {onChange, value}}) => (
+                  <Input
+                    placeholder="Digite o seu e-mail"
+                    autoCapitalize="none"
+                    leftElement={
+                      <Box ml={2}>
+                        <MaterialCommunityIcons
+                          name="email-outline"
+                          size={24}
+                          color={theme.colors.gray[700]}
+                        />
+                      </Box>
+                    }
+                    value={value}
+                    onChangeText={onChange}
+                  />
+                )}
               />
             </Box>
             <Box mt={2}>
               <Text color="gray.700">Senha</Text>
-              <Input
-                isPassword
-                placeholder="Digite a sua senha"
-                autoCapitalize="none"
-                leftElement={
-                  <Box ml={2}>
-                    <MaterialCommunityIcons
-                      name="lock-outline"
-                      size={24}
-                      color={theme.colors.gray[700]}
-                    />
-                  </Box>
-                }
+              <Controller
+                name="password"
+                control={control}
+                render={({field: {onChange, value}}) => (
+                  <Input
+                    isPassword
+                    placeholder="Digite a sua senha"
+                    autoCapitalize="none"
+                    leftElement={
+                      <Box ml={2}>
+                        <MaterialCommunityIcons
+                          name="lock-outline"
+                          size={24}
+                          color={theme.colors.gray[700]}
+                        />
+                      </Box>
+                    }
+                    value={value}
+                    onChangeText={onChange}
+                  />
+                )}
               />
             </Box>
             <TouchableOpacity
@@ -104,7 +180,12 @@ export default function Login({
             </TouchableOpacity>
           </VStack>
           <VStack mb={2} p={4} backgroundColor="gray.50">
-            <Button title="Entrar" type="primary" />
+            <Button
+              title="Entrar"
+              type="primary"
+              // eslint-disable-next-line @typescript-eslint/no-misused-promises
+              onPress={handleSubmit(onSubmit)}
+            />
             <TouchableOpacity
               style={{alignSelf: 'center'}}
               onPress={() => navigation.navigate(routes.auth.signUp as never)}>
