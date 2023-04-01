@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -11,7 +11,6 @@ import {
   Button,
   Divider,
   Image,
-  Input,
   ScrollView,
   Text,
   VStack,
@@ -22,13 +21,12 @@ import {StackScreenProps} from '@react-navigation/stack';
 
 import {AuthRoutesParamsList} from 'src/shared/interfaces/routes';
 import {routes} from 'src/shared/constants/routes';
+import Input from 'src/components/Form/Input';
 
 export default function Login({
   route,
   navigation,
 }: StackScreenProps<AuthRoutesParamsList, 'login'>) {
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
@@ -68,7 +66,6 @@ export default function Login({
               <Text color="gray.700">E-mail</Text>
               <Input
                 placeholder="Digite o seu e-mail"
-                backgroundColor="white"
                 autoCapitalize="none"
                 leftElement={
                   <Box ml={2}>
@@ -79,19 +76,14 @@ export default function Login({
                     />
                   </Box>
                 }
-                _input={{
-                  selectionColor: 'rgba(0,0,0,.2)',
-                  cursorColor: 'rgba(0,0,0,.2)',
-                }}
               />
             </Box>
             <Box mt={2}>
               <Text color="gray.700">Senha</Text>
               <Input
+                isPassword
                 placeholder="Digite a sua senha"
-                backgroundColor="white"
                 autoCapitalize="none"
-                secureTextEntry={!showPassword}
                 leftElement={
                   <Box ml={2}>
                     <MaterialCommunityIcons
@@ -101,21 +93,6 @@ export default function Login({
                     />
                   </Box>
                 }
-                rightElement={
-                  <TouchableOpacity
-                    style={{marginRight: 10}}
-                    onPress={() => setShowPassword(!showPassword)}>
-                    <MaterialCommunityIcons
-                      name={showPassword ? 'eye-outline' : 'eye-off-outline'}
-                      size={24}
-                      color={theme.colors.gray[700]}
-                    />
-                  </TouchableOpacity>
-                }
-                _input={{
-                  selectionColor: 'rgba(0,0,0,.2)',
-                  cursorColor: 'rgba(0,0,0,.2)',
-                }}
               />
             </Box>
             <TouchableOpacity
