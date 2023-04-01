@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import {
   Box,
-  Button,
   Divider,
   Image,
   ScrollView,
@@ -22,6 +21,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {AuthRoutesParamsList} from 'src/shared/interfaces/routes';
 import {routes} from 'src/shared/constants/routes';
 import Input from 'src/components/Form/Input';
+import Button from 'src/components/Form/Button';
 
 export default function Login({
   route,
@@ -103,15 +103,8 @@ export default function Login({
               <Text color="violet.600">Esqueci minha senha</Text>
             </TouchableOpacity>
           </VStack>
-          <VStack mb={2} p={4}>
-            <Button
-              backgroundColor="violet.600"
-              mb={4}
-              _pressed={{opacity: 0.6}}>
-              <Text color="gray.50" fontSize="md" fontWeight="bold">
-                Entrar
-              </Text>
-            </Button>
+          <VStack mb={2} p={4} backgroundColor="gray.50">
+            <Button title="Entrar" type="primary" />
             <TouchableOpacity
               style={{alignSelf: 'center'}}
               onPress={() => navigation.navigate(routes.auth.signUp as never)}>
