@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-floating-promises */
+import React, {useContext, useState} from 'react';
 import {
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -28,6 +29,7 @@ import {routes} from 'src/shared/constants/routes';
 import Input from 'src/components/Form/Input';
 import Button from 'src/components/Form/Button';
 import {checkEmail} from 'src/shared/utils/checkEmail';
+import AuthContext from 'src/shared/contexts/AuthContext';
 
 interface FormProps extends FieldValues {
   email: string;
@@ -38,13 +40,17 @@ export default function Login({
   route,
   navigation,
 }: StackScreenProps<AuthRoutesParamsList, 'login'>) {
+  const {saveUser} = useContext(AuthContext);
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const {control, handleSubmit} = useForm<FormProps>();
 
   const auth = getAuth(app);
 
   async function onSubmit(form: FormProps) {
     if (!form.email || !form.password) {
-      Alert.alert(
+      return Alert.alert(
         'Meteor To Do',
         'Por favor preencha os campos necessários para realizar o login!',
       );
@@ -52,19 +58,25 @@ export default function Login({
 
     const isValid = checkEmail(form.email);
     if (!isValid) {
-      Alert.alert('Meteor To Do', 'Digite um e-mail válido!');
+      return Alert.alert('Meteor To Do', 'Digite um e-mail válido!');
     }
 
     if (form.password.length < 6) {
-      Alert.alert('Meteor To Do', 'Sua senha deve ter no mínimo 6 caracteres!');
+      return Alert.alert(
+        'Meteor To Do',
+        'Sua senha deve ter no mínimo 6 caracteres!',
+      );
     }
+
+    setIsLoading(true);
 
     await signInWithEmailAndPassword(auth, form.email, form.password)
       .then(res => {
-        Alert.alert('Meteor To Do', 'Login realizado com sucesso!');
+        saveUser(res.user);
+        setIsLoading(false);
       })
       .catch(error => {
-        console.log(error.code);
+        setIsLoading(false);
         if (error.code === 'auth/user-not-found') {
           return Alert.alert('Meteor To Do', 'E-mail e/ou senha incorreto!');
         }
@@ -178,6 +190,7 @@ export default function Login({
           </VStack>
           <VStack mb={2} p={4} backgroundColor="gray.50">
             <Button
+              isLoading={isLoading}
               title="Entrar"
               type="primary"
               // eslint-disable-next-line @typescript-eslint/no-misused-promises
