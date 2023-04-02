@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   Alert,
   KeyboardAvoidingView,
@@ -9,11 +9,13 @@ import {Keyboard} from 'react-native';
 import {Box, Divider, Image, ScrollView, Text} from 'native-base';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Controller, FieldValues, useForm} from 'react-hook-form';
+import {getDatabase, ref, set, child, push} from 'firebase/database';
 
 import {AppRoutesParamsList} from 'src/shared/interfaces/routes';
 import BackButton from 'src/components/BackButton';
 import Input from 'src/components/Form/Input';
 import Button from 'src/components/Form/Button';
+import AuthContext from 'src/shared/contexts/AuthContext';
 
 interface FormProps extends FieldValues {
   title: string;
@@ -24,17 +26,46 @@ export default function NewTask({
   route,
   navigation,
 }: StackScreenProps<AppRoutesParamsList, 'new-task'>) {
+  const {user} = useContext(AuthContext);
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const {control, handleSubmit} = useForm<FormProps>();
+  const {control, handleSubmit, setValue} = useForm<FormProps>();
+  const db = getDatabase();
 
-  function onSubmit(form: FormProps) {
+  async function onSubmit(form: FormProps) {
     if (!form.title || !form.description) {
       return Alert.alert(
         'Meteor To Do',
         'Por favor preencha os campos necessários para criar a tarefa!',
       );
     }
+
+    setIsLoading(true);
+
+    const taskId = push(child(ref(db), `tasks/user${user.uid}`)).key;
+    const productDB = ref(db, `tasks/user${user.uid}/${taskId as string}`);
+
+    const data = {
+      id: taskId,
+      title: form.title,
+      description: form.description,
+      isDone: false,
+      doneAt: null,
+      createdAt: String(new Date()),
+    };
+
+    await set(productDB, data)
+      .then(() => {
+        setValue('title', '');
+        setValue('description', '');
+        Alert.alert('Meteor To Do', 'Tarefa criada com sucesso!');
+      })
+      .catch(error => {
+        Alert.alert('Meteor To Do', error.message);
+      });
+
+    setIsLoading(false);
   }
 
   return (
