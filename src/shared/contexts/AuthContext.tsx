@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
 import React, {createContext, useEffect, useState} from 'react';
 import {User as FirebaseUserType, getAuth, signOut} from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';

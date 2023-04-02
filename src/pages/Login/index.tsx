@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
 import React, {useContext, useState} from 'react';
 import {
   TouchableOpacity,
@@ -193,7 +192,6 @@ export default function Login({
               isLoading={isLoading}
               title="Entrar"
               type="primary"
-              // eslint-disable-next-line @typescript-eslint/no-misused-promises
               onPress={handleSubmit(onSubmit)}
             />
             <TouchableOpacity
