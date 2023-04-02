@@ -15,6 +15,7 @@ export default function BackButton({goBack}: BackButtonProps) {
       backgroundColor="amber.300"
       p={2}
       borderRadius={20}
+      zIndex={2}
       _pressed={{opacity: 0.6}}
       onPress={goBack}>
       <Icon as={<Ionicons name="arrow-back" />} color="violet.600" size={6} />
