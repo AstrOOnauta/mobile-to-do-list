@@ -3,14 +3,21 @@
     "name": "mobile-to-do-list",
     "slug": "mobile-to-do-list",
     "version": "1.0.0",
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "android": {
       "googleServicesFile": "./android/app/google-services.json",
-      "package": "com.astroonauta.mobiletodolist"
+      "package": "com.mobiletodolist"
     },
     "ios": {
       "googleServicesFile": "./ios/GoogleService-Info.plist",
       "bundleIdentifier": "org.name.mobiletodolist"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7c882eac-e7aa-4f57-889b-8f461f56b6ba"
+      }
     }
   }
 }
