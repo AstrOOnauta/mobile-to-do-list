@@ -17,11 +17,25 @@ export default function Tasks({
 }: StackScreenProps<HomeRoutesParamsList, 'tasks'>) {
   const {user} = useContext(AuthContext);
 
+  const [search, setSearch] = useState<string>('');
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const isFocused = useIsFocused();
   const db = getDatabase();
+
+  function onSearch(value: string) {
+    if (value === '') {
+      setFilteredTasks(tasks);
+    } else {
+      const newTasks = tasks.filter(task => {
+        return task.title.includes(value) || task.description.includes(value);
+      });
+
+      setFilteredTasks(newTasks);
+    }
+  }
 
   async function getTasks() {
     setIsLoading(true);
@@ -51,6 +65,10 @@ export default function Tasks({
     }
   }, [isFocused]);
 
+  useEffect(() => {
+    onSearch(search);
+  }, [tasks]);
+
   return (
     <Box flex={1} backgroundColor="gray.50" p={4}>
       <Box mt={2} mb={4}>
@@ -59,6 +77,11 @@ export default function Tasks({
           rightElement={
             <Icon as={<MaterialIcons name="search" />} size={6} mr={2.5} />
           }
+          value={search}
+          onChangeText={newValue => {
+            setSearch(newValue);
+            onSearch(newValue);
+          }}
         />
       </Box>
       {isLoading ? (
@@ -73,10 +96,10 @@ export default function Tasks({
             />
           );
         })
-      ) : tasks.length ? (
+      ) : filteredTasks.length ? (
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={tasks}
+          data={filteredTasks}
           renderItem={({item, index}) => {
             return <TaskCard key={index} item={item} getTasks={getTasks} />;
           }}
